@@ -45,16 +45,7 @@ namespace ShowMoonPriceLLL
                         ExtendedLevel level = getLevelFromLine(line);
                         if(level is not null)
                         {
-                            if (level.routePrice == 0)
-                            {
-                                //Vanilla planet
-                                modifiedString += line + (level.selectableLevel.riskLevel + "     $").PadLeft(40 - line.Length) + getRoutePriceForVanillaPlanet(level.NumberlessPlanetName) + "\n";
-                            }
-                            else
-                            {
-                                //Modded Planet
-                                modifiedString += line + (level.selectableLevel.riskLevel + "     $").PadLeft(40 - line.Length) + level.routePrice + "\n";
-                            }
+                            modifiedString += line + (level.selectableLevel.riskLevel + "     $").PadLeft(40 - line.Length) + level.RoutePrice + "\n";
                         }
                         else
                         {
@@ -76,32 +67,16 @@ namespace ShowMoonPriceLLL
             ExtendedLevel extendedLevel = null;
             foreach (var level in Terminal.moonsCatalogueList.ToList())
             {
-                if(SelectableLevel_Patch.TryGetExtendedLevel(level, out var returnExtendedLevel))
+                extendedLevel = LevelManager.GetExtendedLevel(level);
+                if (extendedLevel is not null)
                 {
-                    if(returnExtendedLevel.NumberlessPlanetName == getNameFromLine(line))
+                    if(extendedLevel.NumberlessPlanetName == getNameFromLine(line))
                     {
-                        extendedLevel = returnExtendedLevel;
+                        return extendedLevel;
                     }
                 }
             }
-            return extendedLevel;
-        }
-
-        private static int getRoutePriceForVanillaPlanet(string planetName)
-        {
-            if (planetName == "Rend")
-            {
-                return 550;
-            }
-            else if (planetName == "Dine")
-            {
-                return 600;
-            }
-            else if (planetName == "Titan")
-            {
-                return 700;
-            }
-            return 0;
+            return null;
         }
 
         private static string getNameFromLine(string line)
