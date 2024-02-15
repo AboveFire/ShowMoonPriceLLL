@@ -36,6 +36,8 @@ namespace ShowMoonPriceLLL
         [HarmonyPriority(Priority.Last)]
         internal static void TextPostProcess_Prefix(ref string modifiedDisplayText)
         {
+            bool showRisk = Config.showRisk.Value;
+            bool showPrice = Config.showPrice.Value;
             if (modifiedDisplayText.Contains("Welcome to the exomoons catalogue"))
             {
                 string modifiedString = "";
@@ -43,14 +45,8 @@ namespace ShowMoonPriceLLL
                     if(line.StartsWith("* "))
                     {
                         ExtendedLevel level = getLevelFromLine(line);
-                        if(level is not null)
-                        {
-                            modifiedString += line + (level.selectableLevel.riskLevel + "     $").PadLeft(40 - line.Length) + level.RoutePrice + "\n";
-                        }
-                        else
-                        {
-                            modifiedString += line + "\n";
-                        }
+
+                        modifiedString += getFormattedLine(line, level, showRisk, showPrice) + "\n";
                     }
                     else
                     {
@@ -84,7 +80,28 @@ namespace ShowMoonPriceLLL
             string name = line.Substring(2);
             name = name.Split('(')[0].Trim();
 
+            //Trim to be compatible with WeatherTweaks
+            name = name.Split('[')[0].Trim();
+
             return name;
+        }
+
+        private static string getFormattedLine(string pLine, ExtendedLevel level, bool pShowRisk, bool pShowPrice )
+        {
+            if (level is not null)
+            {
+                string formattedLine = pLine;
+                if (pShowRisk)
+                {
+                    formattedLine += level.selectableLevel.riskLevel.PadLeft(33 - formattedLine.Length + level.selectableLevel.riskLevel.Length);
+                }
+                if (pShowPrice)
+                {
+                    formattedLine += ("$" + level.RoutePrice).PadLeft(44 - formattedLine.Length);
+                }
+                return formattedLine;
+            }
+            return pLine;
         }
     }
 }
