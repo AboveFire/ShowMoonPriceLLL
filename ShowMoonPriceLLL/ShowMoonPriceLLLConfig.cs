@@ -2,12 +2,12 @@
 
 namespace ShowMoonPriceLLL
 {
-    public class Config
+    public class ShowMoonPriceLLLConfig
     {
         public static ConfigEntry<bool> showRisk;
         public static ConfigEntry<bool> showPrice;
 
-        public Config(ConfigFile cfg)
+        public ShowMoonPriceLLLConfig(ConfigFile cfg)
         {
             showRisk = cfg.Bind(
                     "General.Toggles",

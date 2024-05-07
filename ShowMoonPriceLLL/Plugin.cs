@@ -6,7 +6,7 @@ namespace ShowMoonPriceLLL
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
     public class Plugin : BaseUnityPlugin
     {
-        public static Config MoonPriceConfig { get; internal set; }
+        public static ShowMoonPriceLLLConfig MoonPriceConfig { get; internal set; }
 
         private void Awake()
         {

@@ -36,8 +36,8 @@ namespace ShowMoonPriceLLL
         [HarmonyPriority(Priority.Last)]
         internal static void TextPostProcess_Prefix(ref string modifiedDisplayText)
         {
-            bool showRisk = Config.showRisk.Value;
-            bool showPrice = Config.showPrice.Value;
+            bool showRisk = ShowMoonPriceLLLConfig.showRisk.Value;
+            bool showPrice = ShowMoonPriceLLLConfig.showPrice.Value;
             if (modifiedDisplayText.Contains("Welcome to the exomoons catalogue"))
             {
                 string modifiedString = "";
@@ -45,7 +45,6 @@ namespace ShowMoonPriceLLL
                     if(line.StartsWith("* "))
                     {
                         ExtendedLevel level = getLevelFromLine(line);
-
                         modifiedString += getFormattedLine(line, level, showRisk, showPrice) + "\n";
                     }
                     else
@@ -53,7 +52,6 @@ namespace ShowMoonPriceLLL
                         modifiedString += line + "\n";
                     }
                 }
-
                 modifiedDisplayText = modifiedString.Substring(0, modifiedString.Length);
             }
         }
@@ -64,9 +62,9 @@ namespace ShowMoonPriceLLL
             foreach (var level in Terminal.moonsCatalogueList.ToList())
             {
                 extendedLevel = LevelManager.GetExtendedLevel(level);
-                if (extendedLevel is not null)
+                if (extendedLevel is not null && extendedLevel.NumberlessPlanetName is not null)
                 {
-                    if(extendedLevel.NumberlessPlanetName == getNameFromLine(line))
+                    if (System.String.Equals(extendedLevel.NumberlessPlanetName.Trim(), getNameFromLine(line)))
                     {
                         return extendedLevel;
                     }
@@ -88,14 +86,14 @@ namespace ShowMoonPriceLLL
 
         private static string getFormattedLine(string pLine, ExtendedLevel level, bool pShowRisk, bool pShowPrice )
         {
-            if (level is not null)
+            if (level is not null && level.SelectableLevel is not null)
             {
                 string formattedLine = pLine;
-                if (pShowRisk)
+                if (pShowRisk && pLine.Length < 33 && level.SelectableLevel.riskLevel is not null)
                 {
-                    formattedLine += level.selectableLevel.riskLevel.PadLeft(33 - formattedLine.Length + level.selectableLevel.riskLevel.Length);
+                    formattedLine += level.SelectableLevel.riskLevel.PadLeft(33 - formattedLine.Length + level.SelectableLevel.riskLevel.Length);
                 }
-                if (pShowPrice)
+                if (pShowPrice && pLine.Length < 44 && level.SelectableLevel.riskLevel is not null)
                 {
                     formattedLine += ("$" + level.RoutePrice).PadLeft(44 - formattedLine.Length);
                 }

@@ -27,7 +27,7 @@
       <Publicize>true</Publicize>
     </Reference>
     <Reference Include="LethalLevelLoader">
-      <HintPath>C:\Users\samud\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\Gamenight v2\BepInEx\plugins\IAmBatby-LethalLevelLoader\LethalLevelLoader.dll</HintPath>
+      <HintPath>C:\Users\samud\AppData\Roaming\Thunderstore Mod Manager\DataFolder\LethalCompany\profiles\LittleCompany Debug\BepInEx\plugins\IAmBatby-LethalLevelLoader\LethalLevelLoader.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>D:\SteamLibrary\steamapps\common\Lethal Company\Lethal Company_Data\Managed\UnityEngine.dll</HintPath>
